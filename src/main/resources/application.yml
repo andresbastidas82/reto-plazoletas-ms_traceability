@@ -1,0 +1,5 @@
+server:
+  port: 8093
+
+appDescription: "Reto plazoletas ms trazabilidad"
+appVersion: "1.0.0"

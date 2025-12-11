@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.1'
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'jacoco'
+    id "org.springdoc.openapi-gradle-plugin" version "1.8.0"
+}
+
+group = 'com.pragma'
+version = '0.0.1-SNAPSHOT'
+description = 'ms_users'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2023.0.1")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // JWT (JSON Web Token)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // Tests
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    // Asegura que los tests se ejecuten antes de generar el reporte
+    dependsOn test
+
+    // Define qué reportes quieres generar (html es el más común)
+    reports {
+        xml.required = true
+        html.required = true
+    }
+
+    // Excluir clases que no aportan valor a la cobertura de código
+    // Esto es una MEJORA DE CALIDAD muy importante para tus reportes
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: [
+                // Excluir la clase principal de la aplicación
+                '**/MsTraceabilityApplication.class',
+                // Excluir todas las clases de configuración
+                '**/configuration/**',
+                // Excluir DTOs, Entidades y Mappers que son principalmente datos y boilerplate
+                '**/dto/**',
+                '**/entity/**',
+                '**/mapper/**',
+                // Excluir excepciones personalizadas
+                '**/exception/**'
+        ])
+    }))
+}
+
+// Opcional pero recomendado: Haz que la tarea 'build' dependa del reporte de Jacoco
+tasks.named('build') {
+    dependsOn jacocoTestReport
+}
