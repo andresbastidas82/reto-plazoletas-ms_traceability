@@ -1,5 +1,15 @@
 server:
   port: 8093
 
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/traceability_db
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+
 appDescription: "Reto plazoletas ms trazabilidad"
 appVersion: "1.0.0"
