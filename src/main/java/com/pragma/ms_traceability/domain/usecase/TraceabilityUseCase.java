@@ -4,9 +4,12 @@ import com.pragma.ms_traceability.domain.api.ITraceabilityServicePort;
 import com.pragma.ms_traceability.domain.model.Traceability;
 import com.pragma.ms_traceability.domain.spi.IAuthenticationServicePort;
 import com.pragma.ms_traceability.domain.spi.ITraceabilityPersistencePort;
+import com.pragma.ms_traceability.infrastructure.out.mongodb.dto.EmployeeRankingDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +35,10 @@ public class TraceabilityUseCase implements ITraceabilityServicePort {
     public Page<Traceability> getLogsByFilters(Traceability traceability, int page, int size) {
         traceability.setCustomerId(authenticationServicePort.getUserIdOfToken());
         return traceabilityPersistencePort.getLogsByFilters(traceability, page, size);
+    }
+
+    @Override
+    public List<EmployeeRankingDTO> getEmployeePerformanceRanking(int limit) {
+        return traceabilityPersistencePort.getEmployeePerformanceRanking(limit);
     }
 }

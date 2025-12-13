@@ -4,14 +4,18 @@ import com.pragma.ms_traceability.application.dto.GenericResponse;
 import com.pragma.ms_traceability.application.dto.LogsResponse;
 import com.pragma.ms_traceability.application.dto.TraceabilityRequest;
 import com.pragma.ms_traceability.application.handler.ITraceabilityHandler;
+import com.pragma.ms_traceability.infrastructure.out.mongodb.dto.EmployeeRankingDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/traceability")
@@ -31,6 +35,12 @@ public class TraceabilityController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(traceabilityHandler.getLogsByOrderId(traceabilityRequest, page, size));
+    }
+
+    @GetMapping("/performance-ranking")
+    public ResponseEntity<List<EmployeeRankingDTO>> getPerformanceRanking(
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(traceabilityHandler.getPerformanceRanking(size));
     }
 
 }

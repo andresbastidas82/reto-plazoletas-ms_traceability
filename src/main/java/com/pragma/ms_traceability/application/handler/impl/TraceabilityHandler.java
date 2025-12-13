@@ -7,10 +7,13 @@ import com.pragma.ms_traceability.application.handler.ITraceabilityHandler;
 import com.pragma.ms_traceability.application.mapper.ITraceabilityRequestMapper;
 import com.pragma.ms_traceability.domain.api.ITraceabilityServicePort;
 import com.pragma.ms_traceability.domain.model.Traceability;
+import com.pragma.ms_traceability.infrastructure.out.mongodb.dto.EmployeeRankingDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +39,10 @@ public class TraceabilityHandler implements ITraceabilityHandler {
         Traceability traceability = traceabilityRequestMapper.toTraceability(traceabilityRequest);
         return traceabilityServicePort.getLogsByFilters(traceability, page, size)
                 .map(traceabilityRequestMapper::toLogsResponse);
+    }
+
+    @Override
+    public List<EmployeeRankingDTO> getPerformanceRanking(int size) {
+        return traceabilityServicePort.getEmployeePerformanceRanking(size);
     }
 }

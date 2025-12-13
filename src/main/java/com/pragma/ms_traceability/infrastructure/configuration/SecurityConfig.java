@@ -39,6 +39,8 @@ public class SecurityConfig {
                 // 4. Definir reglas de autorización para las rutas.
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas sin autenticación.
+                        .requestMatchers("/api/v1/traceability/performance-ranking").hasAnyRole(ROLE_OWNER, ROLE_ADMIN)
+
                         .requestMatchers("/api/v1/traceability/save").hasAnyRole(ROLE_EMPLOYEE, ROLE_OWNER, ROLE_CUSTOMER, ROLE_ADMIN)
                         .requestMatchers("/api/v1/traceability/logs-customer").hasAnyRole(ROLE_CUSTOMER, ROLE_EMPLOYEE, ROLE_OWNER, ROLE_ADMIN)
 
