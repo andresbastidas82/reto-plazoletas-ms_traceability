@@ -21,6 +21,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 // --- FIN DE LOS IMPORTS ---
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -76,7 +77,7 @@ class TraceabilityControllerTest {
     void getLogsByOrderId_shouldReturnPageOfLogs() throws Exception {
         // Arrange
         TraceabilityRequest request = new TraceabilityRequest(1L, null, 3L, null, null, null);
-        LogsResponse logsResponse = new LogsResponse(1L, "PENDING", "PREPARING", LocalDateTime.now().toString(), LocalDateTime.now().toString(), 2L, 3L);
+        LogsResponse logsResponse = new LogsResponse(1L, "PENDING", "PREPARING", LocalDateTime.now().toString(), LocalDateTime.now().toString(), BigDecimal.TEN, 2L, 3L);
         Page<LogsResponse> responsePage = new PageImpl<>(List.of(logsResponse));
 
         when(traceabilityHandler.getLogsByOrderId(any(TraceabilityRequest.class), anyInt(), anyInt())).thenReturn(responsePage);

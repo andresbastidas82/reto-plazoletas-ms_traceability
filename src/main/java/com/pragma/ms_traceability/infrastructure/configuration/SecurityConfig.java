@@ -39,6 +39,8 @@ public class SecurityConfig {
                 // 4. Definir reglas de autorización para las rutas.
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas sin autenticación.
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
                         .requestMatchers("/api/v1/traceability/performance-ranking").hasAnyRole(ROLE_OWNER, ROLE_ADMIN)
 
                         .requestMatchers("/api/v1/traceability/save").hasAnyRole(ROLE_EMPLOYEE, ROLE_OWNER, ROLE_CUSTOMER, ROLE_ADMIN)
