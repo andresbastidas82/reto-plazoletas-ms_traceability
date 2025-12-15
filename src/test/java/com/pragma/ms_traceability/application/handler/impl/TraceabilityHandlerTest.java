@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -78,7 +79,7 @@ class TraceabilityHandlerTest {
         int size = 10;
 
         // 1. Preparar los datos de entrada y salida esperados
-        LogsResponse logsResponse = new LogsResponse(1L, "PENDING", "PREPARING", LocalDateTime.now().toString(), LocalDateTime.now().toString(), null, null);
+        LogsResponse logsResponse = new LogsResponse(1L, "PENDING", "PREPARING", LocalDateTime.now().toString(), LocalDateTime.now().toString(), BigDecimal.TEN, null, null);
         Page<Traceability> traceabilityPage = new PageImpl<>(List.of(traceability));
 
         // 2. Definir el comportamiento de los mocks
